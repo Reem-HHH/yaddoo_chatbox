@@ -53,9 +53,8 @@ body {
 
 body {
   margin: 0;
-  font-family: 'Noto Naskh Arabic', system-ui, -apple-system, "Segoe UI", Arial;
+  font-family: 'Noto Kufi Arabic', 'Noto Naskh Arabic', system-ui, -apple-system, "Segoe UI", Arial;
   color: var(--ink);
-  /* one background only: your PNG + subtle dark overlay */
   background:
     linear-gradient(to bottom, var(--bg-overlay-top), var(--bg-overlay-bottom)),
     url('bg_majlis.png') center / cover no-repeat fixed;
@@ -63,6 +62,7 @@ body {
   text-rendering: optimizeLegibility;
   overflow-x: hidden;
 }
+
 
 /* ---------- Buttons ---------- */
 .btn {
@@ -341,7 +341,7 @@ body {
 
 /* leave space for .msg-avatar */
 
-/* ---------- Login gate ---------- */
+/* ---------- Login gate (smooth, minimal, full-width) ---------- */
 .gate {
   position: fixed;
   inset: 0;
@@ -351,92 +351,125 @@ body {
   z-index: 10;
   opacity: 1;
   visibility: visible;
-  transition: opacity .25s ease, visibility .25s ease
+  transition: opacity .25s ease, visibility .25s ease;
 }
 
 .gate.hide {
   opacity: 0;
-  visibility: hidden
+  visibility: hidden;
 }
 
 .gate-card {
-  width: min(540px, 92vw);
-  background: radial-gradient(120% 100% at 50% 0%, #ffffffcc, #fff6dfcc 60%, #fff4d8cc 100%);
-  backdrop-filter: blur(6px);
+  width: min(420px, 92vw);
+  background: radial-gradient(120% 100% at 50% 0%, #fffaf2cc, #fff6dfcc 70%, #fff4d8cc 100%);
+  backdrop-filter: blur(8px);
   border: 1px solid rgba(255, 255, 255, .6);
-  border-radius: 16px;
-  padding: 20px;
+  border-radius: 20px;
+  padding: 28px 24px;
   box-shadow: var(--s3);
-  transform: translateY(8px);
+  text-align: center;
   animation: pop .28s ease-out forwards;
 }
 
 @keyframes pop {
   to {
-    transform: translateY(0)
+    transform: translateY(0);
+    opacity: 1;
   }
 }
 
 .gate-card h2 {
-  margin: 6px 0 14px;
+  margin: 0 0 18px;
   font-size: var(--fs-3);
   color: #3a2a12;
-  text-align: center
 }
 
-.gate-row {
-  display: flex;
-  gap: 10px;
-  align-items: center;
-  margin: 12px 0
+/* unified input/button look */
+.gate-row input[type="text"],
+.gate-card button {
+  width: 100%;
+  padding: 0.9rem 1rem;
+  border-radius: 14px;
+  border: 1px solid rgba(0, 0, 0, .12);
+  background: #fffaf0;
+  color: #3b2b12;
+  font-size: var(--fs-1);
+  font-weight: 600;
+  outline: none;
+  margin-bottom: 1rem;
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, .04);
+  transition: all .2s ease;
 }
 
-.gate-row>span {
-  min-width: 72px
+.gate-row input[type="text"]:focus {
+  box-shadow: var(--ring);
 }
 
-.gate-row input[type="text"] {
-  flex: 1;
-  padding: 12px;
-  border-radius: 10px;
-  border: 1px solid rgba(0, 0, 0, .15);
-  background: #fff
-}
-
+/* full-width gender pills */
 .gate-gender {
   border: none;
   display: flex;
-  gap: 12px;
-  align-items: center;
-  flex-wrap: wrap;
-  justify-content: center
+  flex-direction: column;
+  gap: 0.6rem;
+  margin: 1rem 0 1.4rem;
+  padding: 0;
+}
+
+.gate-gender legend {
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+  color: #3a2a12;
 }
 
 .pill {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 10px 14px;
-  border-radius: 999px;
-  background: #fff;
+  display: block;
+  width: 100%;
+  background: #fffaf0;
+  color: #3b2b12;
+  text-align: center;
+  padding: 0.9rem 1rem;
+  border-radius: 14px;
   border: 1px solid rgba(0, 0, 0, .12);
   cursor: pointer;
-  user-select: none
+  font-size: var(--fs-1);
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.pill:hover {
+  background: #fff5e2;
 }
 
 .pill input {
-  accent-color: #c7832c
+  display: none;
 }
 
-.emoji {
-  font-size: 20px
+.pill input:checked+span,
+.pill:has(input:checked) {
+  background: linear-gradient(180deg, var(--glow), var(--glow-2));
+  color: #fff;
+  border: none;
+  font-weight: 700;
+}
+
+/* button consistency */
+.gate-card .btn.primary.fill {
+  width: 100%;
+  border-radius: 14px;
+  font-weight: 700;
+  background: linear-gradient(180deg, var(--glow), var(--glow-2));
+  color: #3b2b12;
+  box-shadow: 0 6px 14px rgba(0, 0, 0, .15);
+}
+
+.gate-card .btn.primary.fill:hover {
+  background: linear-gradient(180deg, #f6bd64, #d8912b);
 }
 
 .muted {
-  margin: 8px 0 0;
+  font-size: 0.85rem;
   color: #7b6b5b;
-  font-size: var(--fs-0);
-  text-align: center
+  margin-top: 0.3rem;
 }
 
 /* ---------- Responsive ---------- */
