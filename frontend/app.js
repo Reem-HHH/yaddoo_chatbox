@@ -42,12 +42,12 @@ const timeStr = () => new Date().toLocaleTimeString([], { hour: '2-digit', minut
   chat.scrollTop = chat.scrollHeight;
 } */
 
-  function addRow({ who, text }) {
+function addRow({ who, text }) {
   const r = el('div', 'row' + (who === 'me' ? ' me' : ''));
 
   // pick avatar image paths
-  const mySrc   = document.querySelector('#user-avatar img')?.src || 'assets/girl.png';
-  const botSrc  = 'assets/yaddoo.png';
+  const mySrc = document.querySelector('#user-avatar img')?.src || 'assets/girl.png';
+  const botSrc = 'assets/yaddoo.png';
   const avatarSrc = (who === 'me') ? mySrc : botSrc;
 
   // build nodes
@@ -98,7 +98,13 @@ function greet(profile) {
 }
 
 // ---------- API base ----------
-const API_BASE = (location.port === '3000') ? '' : 'http://localhost:3000';
+/*const API_BASE = (location.port === '3000') ? '' : 'http://localhost:3000'; */
+// ---------- API base ----------
+const API_BASE =
+  (location.hostname === 'localhost' || location.hostname === '127.0.0.1')
+    ? 'http://localhost:3000'
+    : 'https://yaddoo-chatbox.onrender.com';
+
 
 async function generateReply(userText, history) {
   const r = await fetch(`${API_BASE}/api/chat`, {
