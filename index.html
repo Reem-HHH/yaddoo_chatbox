@@ -1,0 +1,95 @@
+<!-- index.html — Yaddoo (يدّوه) chatbox for grade-2 kids
+     - Dynamic RTL UI, warm "majlis night" theme
+     - Login overlay (name + gender), logout + switch profile
+     - No images; fairy-lights + fanoos are drawn with CSS
+     - The page talks to /api/chat (Flask on :3000). If you open from a static
+       server (e.g. VS Code Live Server :5500), the JS auto-targets http://localhost:3000.
+-->
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>مجلس يَدّوه 👵🏽</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body>
+
+  <div class="wrap">
+    <!-- Top bar -->
+    <header class="topbar">
+      <div class="brand">
+        <div class="badge">يَدّوه</div>
+        <h1>مجلس يَدّوه 👵🏽</h1>
+      </div>
+      <div class="actions">
+        <!-- <button id="debugBtn" class="btn ghost" type="button">⚙️ الفحص</button> -->
+        <button id="switchBtn" class="btn ghost" type="button">تبديل الملف</button>
+        <button id="logoutBtn" class="btn danger" type="button">تسجيل الخروج</button>
+      </div>
+    </header>
+
+    <!-- Stage contains: grandma hero (top), board (down-right), user badge (bottom-right) -->
+    <section class="stage">
+      <!-- Grandma badge -->
+      <!-- Grandma Yaddoo avatar -->
+      <div id="yaddoo-avatar" class="avatar yaddoo-avatar">
+        <img src="assets/yaddoo.png" alt="Yaddoo">
+        <span>يَدّوَة</span>
+      </div>
+
+      <!-- Chat board -->
+      <div class="board" role="region" aria-live="polite">
+        <div id="chat" class="chat"></div>
+
+        <div class="composer">
+          <input id="input" type="text" placeholder="سولف ليدّوه…" autocomplete="off" />
+          <button id="send" class="btn primary" type="button">إرسال</button>
+        </div>
+      </div>
+
+      <!-- Kid badge -->
+      <!-- User avatar -->
+      <div id="user-avatar" class="avatar user-avatar">
+        <img src="assets/girl.png" alt="User Avatar">
+        <span>User</span>
+      </div>
+
+    </section>
+  </div>
+
+  <!-- Login / profile gate -->
+  <div id="gate" class="gate" role="dialog" aria-modal="true">
+    <form id="gateForm" class="gate-card">
+      <h2>يا هلا! منو وياي؟</h2>
+
+      <label class="gate-row">
+        <span>اسمك</span>
+        <input id="gateName" type="text" placeholder="اكتب اسمك" required />
+      </label>
+
+      <fieldset class="gate-row gate-gender">
+        <legend>اختر شخصيتك</legend>
+
+        <label class="pill">
+          <input type="radio" name="gender" value="female" required />
+          <span class="emoji"></span> بنت
+        </label>
+
+        <label class="pill">
+          <input type="radio" name="gender" value="male" />
+          <span class="emoji"></span> ولد
+        </label>
+      </fieldset>
+
+      <button class="btn primary fill" type="submit">ادخل المجلس</button>
+      <p class="muted">تقدر تغيّر لاحقًا من “تبديل الملف”.</p>
+    </form>
+  </div>
+
+  <script type="module" src="app.js"></script>
+</body>
+
+</html>
