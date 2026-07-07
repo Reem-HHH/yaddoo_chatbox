@@ -12,24 +12,27 @@ Services (run each in its own terminal; leave both running for local dev):
 
 | Service  | Command | Port | Notes |
 | -------- | ------- | ---- | ----- |
-| Backend  | `set -a; . /workspace/.env; set +a; cd backend && /workspace/.venv/bin/python app.py` | 3000 | Flask dev server (`debug=True`). |
+| Backend  | `set -a; . /workspace/backend/.env; set +a; cd backend && /workspace/.venv/bin/python app.py` | 3000 | Flask dev server (`debug=True`). |
 | Frontend | `cd frontend && /workspace/.venv/bin/python -m http.server 5500` | 5500 | Any static server works. |
 
 Open the app at `http://localhost:5500/index.html`. There is no build step and no
 lint/test suite in this repo.
 
 Non-obvious caveats:
-- Env loading: `app.py` calls `load_dotenv(BASE_DIR / ".env")`, i.e. it looks for
-  `backend/.env` (which does not exist). The committed key lives in the repo-root
-  `/workspace/.env`, so export it into the shell before launching (the backend
-  command above does this via `set -a; . /workspace/.env`), or copy it to
-  `backend/.env`. `GET /health` returns `"has_key": true` once the key is loaded.
+- Env loading: `app.py` calls `load_dotenv(BASE_DIR / ".env")`, i.e. it reads
+  `backend/.env` — NOT the repo-root `/workspace/.env`. Put a valid `GROQ_API_KEY`
+  (and optionally `GROQ_MODELS`) in `backend/.env` (git-ignored). `GET /health`
+  returns `"has_key": true` once the key is loaded.
+- The `GROQ_API_KEY` secret is injected as an env var, but the persistent tmux
+  server can predate the injection and may not have it. Writing the key to
+  `backend/.env` is the reliable path; sourcing it (`set -a; . backend/.env`) also
+  guarantees it overrides any stale value.
+- The key committed in the repo-root `/workspace/.env` is INVALID (Groq returns
+  `401`); do not rely on it. Use the injected `GROQ_API_KEY` secret instead.
+- `mixtral-8x7b-32768` in the default `GROQ_MODELS` is decommissioned by Groq; use
+  `llama-3.1-8b-instant` (the app auto-falls back to it anyway).
 - The frontend hardcodes its API base: on `localhost`/`127.0.0.1` it calls
   `http://localhost:3000`, otherwise the public Render URL. Keep the backend on
   port 3000 for local testing.
 - Rule-based replies (greetings, small talk, very short/garbled input) are answered
   locally without calling Groq — useful for smoke-testing without a valid key.
-- LLM replies require a VALID `GROQ_API_KEY`. The key committed in `.env` currently
-  returns `401 Invalid API Key` from Groq, so full LLM answers need a working key
-  supplied via the `GROQ_API_KEY` secret/env var. Also note `mixtral-8x7b-32768`
-  in `GROQ_MODELS` is decommissioned by Groq; `llama-3.1-8b-instant` still works.
