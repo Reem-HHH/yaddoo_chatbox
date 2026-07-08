@@ -4,7 +4,8 @@ Arabic/Emirati grandma chatbot for kids. A Flask backend proxies chat requests t
 the Groq API; a static frontend provides the RTL chat UI.
 
 - `backend/app.py` — Flask API (`/api/chat`, `/health`, `/`). Defaults to port `3000`.
-- `frontend/` — static `index.html`, `app.js`, `styles.css`, and `assets/`.
+- Repo root — static frontend: `index.html`, `app.js`, `styles.css`, `bg_majlis.png`,
+  and `assets/`. These live at the root so GitHub Pages serves the app at its root URL.
 
 ## Cursor Cloud specific instructions
 
@@ -13,7 +14,7 @@ Services (run each in its own terminal; leave both running for local dev):
 | Service  | Command | Port | Notes |
 | -------- | ------- | ---- | ----- |
 | Backend  | `set -a; . /workspace/backend/.env; set +a; cd backend && /workspace/.venv/bin/python app.py` | 3000 | Flask dev server (`debug=True`). |
-| Frontend | `cd frontend && /workspace/.venv/bin/python -m http.server 5500` | 5500 | Any static server works. |
+| Frontend | `cd /workspace && /workspace/.venv/bin/python -m http.server 5500` | 5500 | Serves the static files from the repo root. |
 
 Open the app at `http://localhost:5500/index.html`. There is no build step and no
 lint/test suite in this repo.
